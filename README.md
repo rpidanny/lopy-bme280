@@ -10,4 +10,4 @@ A minimal micropython script for [LoPy](https://pycom.io) boards that reads the 
 
 ## Dashboard
 
-![Sensor Readings](screenshot.png =400x)
+![SensorReadings](./screenshot.png =400x)

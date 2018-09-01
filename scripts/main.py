@@ -33,4 +33,4 @@ while True:
     client.publish(topic=adafruit['user'] + "/feeds/bme280_temp", msg=bme.temperature)
     client.publish(topic=adafruit['user'] + "/feeds/bme280_pressure", msg=bme.pressure)
     client.publish(topic=adafruit['user'] + "/feeds/bme280_humidity", msg=bme.humidity)
-    time.sleep(10)
+    time.sleep(30)

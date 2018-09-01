@@ -246,7 +246,7 @@ class BME280:
 
     def read_humidity(self):
         adc = self.read_raw_humidity()
-        # print 'Raw humidity = {0:d}'.format (adc)
+        # print('Raw humidity = {0:d}'.format(adc))
         h = self.t_fine - 76800
         h = (((((adc << 14) - (self.dig_H4 << 20) - (self.dig_H5 * h)) +
              16384) >> 15) * (((((((h * self.dig_H6) >> 10) * (((h *

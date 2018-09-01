@@ -10,7 +10,7 @@ from config import adafruit, known_nets
 from util.wifi import connect_wifi
 
 
-i2c = I2C()
+i2c = I2C(0, I2C.MASTER, baudrate=400000)
 bme = BME280(i2c=i2c, mode=BME280_OSAMPLE_16)
 
 wl = WLAN()
@@ -32,5 +32,5 @@ while True:
         client.connect()
     client.publish(topic=adafruit['user'] + "/feeds/bme280_temp", msg=bme.temperature)
     client.publish(topic=adafruit['user'] + "/feeds/bme280_pressure", msg=bme.pressure)
-    client.publish(topic=adafruit['user'] +  "/feeds/bme280_humidity", msg=bme.humidity)
+    client.publish(topic=adafruit['user'] + "/feeds/bme280_humidity", msg=bme.humidity)
     time.sleep(10)

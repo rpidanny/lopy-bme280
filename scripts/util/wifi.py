@@ -27,7 +27,7 @@ def connect_wifi(known_nets):
 		while not wl.isconnected():
 			machine.idle()  # save power while waiting
 		print(" [+] Connected to " + net_to_use +
-				" with IP address:" + wl.ifconfig()[0])
+				" with IP address: " + wl.ifconfig()[0])
 
 	except Exception as e:
 		print(" [-] Failed to connect to any known network, going into AP mode")

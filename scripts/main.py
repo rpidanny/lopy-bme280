@@ -1,6 +1,6 @@
 # main.py -- put your code here!
 import time
-from machine import I2C
+from machine import I2C, WDT
 from network import WLAN
 
 from mqtt import MQTTClient
@@ -9,6 +9,7 @@ from bme280 import BME280, BME280_OSAMPLE_16
 from config import adafruit, known_nets
 from util.wifi import connect_wifi
 
+wdt = WDT(timeout=60000)
 
 i2c = I2C(0, I2C.MASTER, baudrate=400000)
 bme = BME280(i2c=i2c, mode=BME280_OSAMPLE_16)
@@ -25,12 +26,19 @@ client = MQTTClient(
 client.connect()
 
 while True:
-    print("Temp: " + bme.temperature + ", Pressure: " + bme.pressure +
+    print(" [+] Temp: " + bme.temperature + ", Pressure: " + bme.pressure +
           ", Humidity: " + bme.humidity)
-    if not wl.isconnected():
+    # if not wl.isconnected():
+    #     connect_wifi(known_nets)
+    #     client.connect()
+    try:
+        client.publish(topic=adafruit['user'] + "/feeds/bme280_temp", msg=bme.temperature)
+        client.publish(topic=adafruit['user'] + "/feeds/bme280_pressure", msg=bme.pressure)
+        client.publish(topic=adafruit['user'] + "/feeds/bme280_humidity", msg=bme.humidity)
+    except:
+        print(' [-] Failed to publish data....')
+        print(' [*] Reconnecting to WIFI / MQTT.')
         connect_wifi(known_nets)
         client.connect()
-    client.publish(topic=adafruit['user'] + "/feeds/bme280_temp", msg=bme.temperature)
-    client.publish(topic=adafruit['user'] + "/feeds/bme280_pressure", msg=bme.pressure)
-    client.publish(topic=adafruit['user'] + "/feeds/bme280_humidity", msg=bme.humidity)
+    wdt.feed()
     time.sleep(30)
